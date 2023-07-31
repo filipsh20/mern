@@ -1,16 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react'; // Importa PersistGate
-import { store, persistor } from './store'; // Importa el store y el persistor configurados
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createStore, combineReducers } from "redux";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
-import App from './App'; // Importa tu componente principal
+import App from "./App";
+import authReducer from "./store";
 
-ReactDOM.render(
+const persistConfig = { key: "root", storage, version: 1 };
+const rootReducer = combineReducers({
+  auth: persistReducer(persistConfig, authReducer),
+});
+
+const store = createStore(rootReducer);
+const persistor = persistStore(store);
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
     <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-            <App />
-        </PersistGate>
-    </Provider>,
-    document.getElementById('root')
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
+  </React.StrictMode>
 );

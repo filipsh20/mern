@@ -1,27 +1,23 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { loginSuccess } from "../actions/authAction";
+import { useDispatch, useSelector } from "react-redux";
+import { setLogin } from "../store";
 
 const LoginPage = () => {
-    const state = useSelector((state) => state);
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  console.log(user);
 
-    const handleLogin = (event) => {
-        event.preventDefault();
-        const userInfo = { name: "jaume", surname: "izq" };
-        dispatch(loginSuccess(userInfo))
-        window.location.href = '/home'
-    }
+  const handleLogin = (event) => {
+    event.preventDefault();
+    dispatch(setLogin({ user: "jaume" }));
+  };
 
-    console.log(state);
-
-    return (
-        <div>
-            <h1>Log in</h1>
-            <button onClick={handleLogin}>Log in</button>
-        </div>
-    )
-}
+  return (
+    <div>
+      <h1>Log in</h1>
+      <button onClick={handleLogin}>Log in</button>
+    </div>
+  );
+};
 
 export default LoginPage;

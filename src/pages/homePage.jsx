@@ -1,15 +1,25 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setLogout } from "../store";
+import Button from "../components/Button";
 
 const HomePage = () => {
-    const state = useSelector((state) => state);
-    console.log(state);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  console.log(user);
 
-    return (
-        <div>
-            <h1>home</h1>
-        </div>
-    )
-}
+  const handleLogout = (event) => {
+    event.preventDefault();
+    dispatch(setLogout());
+  };
+
+  return (
+    <div>
+      <h1>home</h1>
+      <button onClick={handleLogout}>Log out</button>
+      <Button>Hola</Button>
+    </div>
+  );
+};
 
 export default HomePage;

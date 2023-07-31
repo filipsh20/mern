@@ -1,15 +1,21 @@
-import { createStore } from 'redux';
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // Puedes usar sessionStorage o localStorage
+import { createSlice } from "@reduxjs/toolkit";
 
-import rootReducer from './reducers/authReducer';
-
-const persistConfig = {
-    key: 'root', // La clave para identificar la persistencia en el almacenamiento
-    storage,
+const initialState = {
+  user: false,
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+export const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {
+    setLogin: (state, action) => {
+      state.user = action.payload.user;
+    },
+    setLogout: (state) => {
+      state.user = false;
+    },
+  },
+});
 
-export const store = createStore(persistedReducer);
-export const persistor = persistStore(store);
+export const { setLogin, setLogout } = authSlice.actions;
+export default authSlice.reducer;
